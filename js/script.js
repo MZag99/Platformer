@@ -25,19 +25,34 @@ background.src = "images/background.png";
 
 
 let offsetx = 0, offsety = 0;
-let positionx = 0, positiony = 90;
+let positionx = 0, positiony = 150;
 
 function drawPlayer(img, sX, sY, sW, sH, dX, dY, dW, dH){
     ctx.drawImage(img, sX, sY, sW, sH, dX, dY, dW, dH);
 
 }
 
+function idleStance(){    
+    if(player.frameX<1024){ 
+        player.frameX = player.frameX + player.width;
+    }
+    else if(player.frameX==1024){ 
+        player.frameX = 0;
+    }
+}
 function animate(){
     ctx.drawImage(background, offsetx, offsety, 800, 500, 0, 0, canvas.width, canvas.height);
-    drawPlayer(playerSprite, 0, 0, player.height, player.width, positionx, positiony, player.height * 0.75, player.width * 0.75);
+    drawPlayer(playerSprite, player.frameX, player.frameY, player.height, player.width, positionx, positiony, player.height * 0.75, player.width * 0.75);
     requestAnimationFrame(animate);
 }
 animate();
 
+window.addEventListener("keydown", function(e){
+    keys[e.keyCode] = true;
+    console.log(keys);
+});
+window.addEventListener("keyup", function(e){
+    delete keys[e.keyCode];
+});
 
 

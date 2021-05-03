@@ -1,6 +1,14 @@
+body {
+  margin: 0;
+  background-color: black;
+}
+
 #gameScreen {
   border: 1px solid black;
   background-color: #3355ff;
   position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
-/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi4uL3Nhc3Mvc3R5bGUuc2NzcyIsInN0eWxlLmNzcyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFBQTtFQUNJLHVCQUFzQjtFQUN0Qix5QkFBeUI7RUFDekIsa0JBQWlCO0FDQ3JCIiwiZmlsZSI6InN0eWxlLmNzcyJ9 */
+/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi4uL3Nhc3Mvc3R5bGUuc2NzcyIsInN0eWxlLmNzcyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFBQTtFQUNJLFNBQVE7RUFDUix1QkFBdUI7QUNDM0I7O0FEQ0E7RUFDSSx1QkFBc0I7RUFDdEIseUJBQXlCO0VBQ3pCLGtCQUFpQjtFQUNqQixRQUFPO0VBQ1AsU0FBUTtFQUNSLGdDQUFnQztBQ0VwQyIsImZpbGUiOiJzdHlsZS5jc3MifQ== */
