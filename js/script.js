@@ -9,7 +9,7 @@ const keys = [];
 
 const player = {
     x:0,
-    y:0,
+    y:150,
     width:256,
     height:256,
     frameX:0,
@@ -25,14 +25,13 @@ background.src = "images/background.png";
 
 
 let offsetx = 0, offsety = 0;
-let positionx = 0, positiony = 150;
 
 function drawPlayer(img, sX, sY, sW, sH, dX, dY, dW, dH){
     ctx.drawImage(img, sX, sY, sW, sH, dX, dY, dW, dH);
 
 }
 
-function idleStance(){    
+function idleStance(){
     if(player.frameX<1024){ 
         player.frameX = player.frameX + player.width;
     }
@@ -40,19 +39,43 @@ function idleStance(){
         player.frameX = 0;
     }
 }
+window.setInterval(idleStance,200);
+
 function animate(){
     ctx.drawImage(background, offsetx, offsety, 800, 500, 0, 0, canvas.width, canvas.height);
-    drawPlayer(playerSprite, player.frameX, player.frameY, player.height, player.width, positionx, positiony, player.height * 0.75, player.width * 0.75);
+    drawPlayer(playerSprite, player.frameX, player.frameY, player.height, player.width, player.x, player.y, player.height * 0.75, player.width * 0.75);
+    moveBackground();
+    movePlayer();
     requestAnimationFrame(animate);
 }
 animate();
 
 window.addEventListener("keydown", function(e){
     keys[e.keyCode] = true;
-    console.log(keys);
+    player.moving = true;
 });
 window.addEventListener("keyup", function(e){
     delete keys[e.keyCode];
+    player.moving = false;
 });
 
-
+function movePlayer(){
+    if(keys[39]){
+        player.x += player.speed;
+        player.frameY = 0;
+    }
+    else if(keys[37]){
+        player.x -= player.speed;
+        player.frameY = 256;
+    }
+}
+function moveBackground(){
+    if(player.x >= 150 && player.moving == true){
+        player.x = 150;
+        offsetx += player.speed;
+    }
+    else if(player.x <= 0 && player.moving == true){
+        player.x = 0;
+        offsetx -= player.speed;
+    }
+}
