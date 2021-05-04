@@ -9,7 +9,7 @@ const keys = [];
 
 const player = {
     x:0,
-    y:150,
+    y:100,
     width:256,
     height:256,
     frameX:0,
@@ -20,23 +20,39 @@ const player = {
 
 const playerSprite = new Image();
 playerSprite.src = "images/spritesheet player.png";
-const background = new Image();
-background.src = "images/background.png";
 
+const backgroundGround = new Image();
+backgroundGround.src = "images/background-ground.png";
+const backgroundSky  = new Image();
+backgroundSky.src = "images/background-sky.png";
+const backgroundClouds = new Image();
+backgroundClouds.src = "images/background-clouds.png";
 
-let offsetx = 0, offsety = 0;
+let mapWidth, mapHeight;
+
+backgroundGround.onload = function(){
+    mapWidth = this.width;
+    mapHeight = this.height;
+}
+
+let offsetx = 0, offsety = 0, cloudoffsetx = 0;
 
 function drawPlayer(img, sX, sY, sW, sH, dX, dY, dW, dH){
     ctx.drawImage(img, sX, sY, sW, sH, dX, dY, dW, dH);
-
+}
+function drawMap(img, sX, sY, sW, sH, dX, dY, dW, dH){
+    ctx.drawImage(img, sX, sY, sW, sH, dX, dY, dW, dH);
 }
 
 window.setInterval(idleStance,200);
 
 function animate(){
-    ctx.drawImage(background, offsetx, offsety, 800, 500, 0, 0, canvas.width, canvas.height);
+    drawMap(backgroundSky, 0, 0, 800, 500, 0, 0, canvas.width, canvas.height);
+    drawMap(backgroundClouds, cloudoffsetx / 4, 0, 800, 500, 0, 0, canvas.width, canvas.height);
+    drawMap(backgroundGround, offsetx, offsety, 800, 500, 0, 0, canvas.width, canvas.height);
     drawPlayer(playerSprite, player.frameX, player.frameY, player.height, player.width, player.x, player.y, player.height * 0.75, player.width * 0.75);
     moveBackground();
+    moveClouds();
     movePlayer();
     console.log(player.x);
     requestAnimationFrame(animate);
@@ -95,7 +111,7 @@ function movePlayer(){
     }
 }
 function moveBackground(){
-    if(player.x >= 150 && player.moving == true && offsetx < 800){
+    if(player.x >= 150 && player.moving == true && offsetx < (mapWidth - 810)){
         player.x = 150;
         offsetx += player.speed;
     }
@@ -103,4 +119,7 @@ function moveBackground(){
         player.x = 0;
         offsetx -= player.speed;
     }
+}
+function moveClouds(){
+    cloudoffsetx++
 }
