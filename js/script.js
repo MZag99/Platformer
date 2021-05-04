@@ -121,5 +121,10 @@ function moveBackground(){
     }
 }
 function moveClouds(){
-    cloudoffsetx++
+    if(!player.moving || player.x < 0)
+    cloudoffsetx = cloudoffsetx + 1;
+    else if(player.moving && keys[39])
+    cloudoffsetx = cloudoffsetx + 3;
+    else if(player.moving && keys[37] && player.x >= 0)
+    cloudoffsetx = cloudoffsetx + 0.5;
 }
