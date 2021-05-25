@@ -1,5 +1,5 @@
 import { background, ctx } from './background.js';
-import { keys } from './app.js';
+import { keys, moveInterval } from './app.js';
 
 export const player = {
     x:0,
@@ -13,11 +13,13 @@ export const player = {
     speed: 9,
     moving: false,
     jumping: false,
+    stuck: false,
 
     drawPlayer: function(){
         const playerSprite = new Image();
         playerSprite.src = "images/spritesheet player.png";
         ctx.drawImage(playerSprite, player.frameX, player.frameY, player.height, player.width, player.x, player.y, player.height * 0.75, player.width * 0.75);
+        this.collisions();
     },
     idleStance: function(){
         if(player.frameX<1024 && player.moving == false){ 
@@ -51,6 +53,23 @@ export const player = {
             }
         }
         background.moveBackground();
+    },
+    collisions: function(){
+        if(player.absx >= 1370 && player.absx <= 1800){
+            player.y = 185;
+            if(player.absx >= 1800 && player.absx <= 1815 && !player.stuck ){
+                player.speed = 0
+                player.stuck = true;
+                player.moving = false;
+            }
+            else if(keys[37] && player.stuck){
+                player.speed = 9;
+                player.stuck = false;
+                player.moving = true;
+            }
+            
+        }
+        else player.y = 100;
     }
 
 }

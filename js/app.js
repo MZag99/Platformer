@@ -2,6 +2,7 @@ import { background } from "./background.js";
 import { player } from "./player.js";
 
 export const keys = [];
+export let moveInterval = window.setInterval(player.movePlayer,15);
 
 function animate() {
     const thisApp = this;
@@ -15,8 +16,7 @@ animate();
 function initEventListeners(){
     let fired = false;
     const runInterval = window.setInterval(player.running,100);
-    const moveInterval = window.setInterval(player.movePlayer,15);
-    const cloudInterval = window.setInterval(background.moveClouds,60);
+    moveInterval;
 
     window.addEventListener("keydown", function(e){
         keys[e.keyCode] = true;
@@ -28,12 +28,14 @@ function initEventListeners(){
         }
     });
     window.addEventListener("keyup", function(e){
-        if(keys[39] == true || keys[37] == true){
+        if(keys[39] || keys[37]){
             fired = false;
             delete keys[e.keyCode];
             player.moving = false;
             player.frameY = 0;
             player.frameX = 0;
+            console.log('player.absx: ',player.absx);
+            console.log('player.x: ', player.x)
         }
     });
 }

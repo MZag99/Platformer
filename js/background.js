@@ -43,9 +43,9 @@ export const background = {
     },
     moveClouds: function(){
 
-        if(!player.moving || player.x < 0)
+        if(!player.moving || player.x < 0 || player.stuck)
             background.clouds.offsetx = background.clouds.offsetx + 0.25;
-        else if(player.moving && keys[39])
+        else if(player.moving && keys[39] && !player.stuck)
             background.clouds.offsetx = background.clouds.offsetx + 0.75;
         else if(player.moving && keys[37] && player.x >= 0)
             background.clouds.offsetx = background.clouds.offsetx + 0.125;
