@@ -10,6 +10,8 @@ const keys = [];
 const player = {
     x:0,
     y:100,
+    absx:0,
+    absy:0,
     width:256,
     height:256,
     frameX:0,
@@ -20,13 +22,15 @@ const player = {
 
 const playerSprite = new Image();
 playerSprite.src = "images/spritesheet player.png";
-
 const backgroundGround = new Image();
 backgroundGround.src = "images/background-ground.png";
 const backgroundSky  = new Image();
 backgroundSky.src = "images/background-sky.png";
 const backgroundClouds = new Image();
 backgroundClouds.src = "images/background-clouds.png";
+const hints = new Image();
+hints.src = "images/hints.png";
+
 
 let mapWidth, mapHeight;
 
@@ -40,22 +44,23 @@ let offsetx = 0, offsety = 0, cloudoffsetx = 0;
 function drawPlayer(img, sX, sY, sW, sH, dX, dY, dW, dH){
     ctx.drawImage(img, sX, sY, sW, sH, dX, dY, dW, dH);
 }
-function drawMap(img, sX, sY, sW, sH, dX, dY, dW, dH){
-    ctx.drawImage(img, sX, sY, sW, sH, dX, dY, dW, dH);
+function drawMap(){
+    ctx.drawImage(backgroundSky, 0, 0, 800, 500, 0, 0, canvas.width, canvas.height);
+    ctx.drawImage(backgroundClouds, cloudoffsetx / 4, 0, 800, 500, 0, 0, canvas.width, canvas.height);
+    ctx.drawImage(backgroundGround, offsetx, offsety, 16000, 500, 0, 0, 16000, canvas.height);
+    ctx.drawImage(hints, 0, 0, 800, 500, 1588, 0, canvas.width, canvas.height);
 }
 
 window.setInterval(idleStance,200);
 
 function animate(){
-    drawMap(backgroundSky, 0, 0, 800, 500, 0, 0, canvas.width, canvas.height);
-    drawMap(backgroundClouds, cloudoffsetx / 4, 0, 800, 500, 0, 0, canvas.width, canvas.height);
-    drawMap(backgroundGround, offsetx, offsety, 800, 500, 0, 0, canvas.width, canvas.height);
+    drawMap();
     drawPlayer(playerSprite, player.frameX, player.frameY, player.height, player.width, player.x, player.y, player.height * 0.75, player.width * 0.75);
     moveBackground();
     moveClouds();
     movePlayer();
-    console.log(player.x);
     requestAnimationFrame(animate);
+    
 }
 animate();
 
@@ -113,6 +118,7 @@ function movePlayer(){
 function moveBackground(){
     if(player.x >= 150 && player.moving == true && offsetx < (mapWidth - 810)){
         player.x = 150;
+        //player.absx = 150 +
         offsetx += player.speed;
     }
     else if(player.x <= 0 && player.moving == true && offsetx > 0){
