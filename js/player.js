@@ -14,6 +14,7 @@ export const player = {
     moving: false,
     jumping: false,
     stuck: false,
+    type: 'z',
 
     drawPlayer: function(){
         const playerSprite = new Image();
@@ -22,52 +23,37 @@ export const player = {
         this.collisions();
     },
     idleStance: function(){
-        if(player.frameX<1024 && player.moving == false){ 
+        if(player.frameX<1024 && !player.moving){ 
             player.frameX = player.frameX + player.width;
         }
-        else if(player.frameX==1024 && player.moving == false){ 
+        else if(player.frameX==1024 && !player.moving){ 
             player.frameX = 0;
         }
     },
     running: function(){
-        if(player.frameX<2304 && player.moving == true){ 
+        if(player.frameX<2304 && player.moving){ 
             player.frameX = player.frameX + player.width;
         }
-        else if(player.frameX==2304 && player.moving == true){ 
+        else if(player.frameX==2304 && player.moving){ 
             player.frameX = 0;
         }
     },
     movePlayer: function(){
-        if(keys[39]){
+        if(keys[39] && !(keys[37] && keys[39]) && player.absx < 15400){
             player.frameY = 512;
-            if(player.x < (800 - player.width * 0.75 + 40)){
                 player.x += player.speed;
                 player.absx += player.speed;
-            }
         }
-        else if(keys[37]){
+        else if(keys[37] && !(keys[39] && keys[37]) && player.absx > 0){
             player.frameY = 768;
-            if(player.x > -30){
                 player.x -= player.speed;
                 player.absx -= player.speed;
-            }
         }
         background.moveBackground();
     },
     collisions: function(){
-        if(player.absx >= 1370 && player.absx <= 1800){
+        if(player.absx >= 1690 && player.absx <= 2060){
             player.y = 185;
-            if(player.absx >= 1800 && player.absx <= 1815 && !player.stuck ){
-                player.speed = 0
-                player.stuck = true;
-                player.moving = false;
-            }
-            else if(keys[37] && player.stuck){
-                player.speed = 9;
-                player.stuck = false;
-                player.moving = true;
-            }
-            
         }
         else player.y = 100;
     }

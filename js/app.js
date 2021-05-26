@@ -14,22 +14,23 @@ function animate() {
 animate();
 
 function initEventListeners(){
-    let fired = false;
+    
     const runInterval = window.setInterval(player.running,100);
     moveInterval;
+    runInterval;
 
-    window.addEventListener("keydown", function(e){
+    window.addEventListener('keydown', function(e){
         keys[e.keyCode] = true;
-        if(!fired && (keys[39] == true || keys[37] == true)){
-            fired = true;
-            player.moving = true;
-            runInterval;    
-            moveInterval;    
+        console.log(keys);
+        if(keys[39] || keys[37]){
+            player.moving = true;    
+        }
+        else if(keys[38]){
+            player.jumping = true;
         }
     });
-    window.addEventListener("keyup", function(e){
-        if(keys[39] || keys[37]){
-            fired = false;
+    window.addEventListener('keyup', function(e){
+        if(keys[39] || keys[37] || keys[38]){
             delete keys[e.keyCode];
             player.moving = false;
             player.frameY = 0;
@@ -41,5 +42,6 @@ function initEventListeners(){
 }
 initEventListeners();
 window.setInterval(player.idleStance,200);
+window.setInterval(background.moveHints, 30);
 
 
