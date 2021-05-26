@@ -1,5 +1,5 @@
 import { background, ctx } from './background.js';
-import { keys, moveInterval } from './app.js';
+import { keys } from './app.js';
 
 export const player = {
     x:0,
@@ -15,6 +15,8 @@ export const player = {
     jumping: false,
     stuck: false,
     type: 'z',
+    top: false,
+    fallen: false,
 
     drawPlayer: function(){
         const playerSprite = new Image();
@@ -39,7 +41,7 @@ export const player = {
         }
     },
     movePlayer: function(){
-        if(keys[39] && !(keys[37] && keys[39]) && player.absx < 15400){
+        if(keys[39] && !(keys[37] && keys[39]) && player.absx < 15400 ){
             player.frameY = 512;
                 player.x += player.speed;
                 player.absx += player.speed;
@@ -51,11 +53,40 @@ export const player = {
         }
         background.moveBackground();
     },
-    collisions: function(){
-        if(player.absx >= 1690 && player.absx <= 2060){
-            player.y = 185;
+    jumpPlayer: function(){
+        if(player.jumping && !player.top){
+            console.log('player.y: ', player.y);
+            player.y -= 2;
+            if(!player.fallen && player.y == 30){
+                player.top = true;
+            }
+            else if(player.fallen && player.y == 115){
+                player.top = true;
+            }
         }
-        else player.y = 100;
+        else if(player.top){
+            player.y += 2;
+            if(!player.fallen && player.y == 100){
+                player.jumping = false;
+                player.top = false;
+            }
+            else if(player.fallen && player.y == 185){
+                player.jumping = false;
+                player.top = false;
+            }
+        }
+    },
+    collisions: function(){
+        if(player.absx >= 1700 && player.absx <= 2060){
+            if(!player.fallen){
+                player.y += 85;
+                player.fallen = true;
+            }
+        }
+        else if((player.absx < 1700 || player.absx > 2000) && player.fallen){
+            player.y -= 85;
+            player.fallen = false; 
+        }
     }
 
 }
