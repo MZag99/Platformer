@@ -20,7 +20,7 @@ function initEventListeners(){
         if(keys[39] || keys[37]){
             player.moving = true;    
         }
-        else if(keys[38] || (keys[38] && (keys[39] || keys[37]))){
+        if(keys[38] || (keys[38] && (keys[39] || keys[37]))){
             player.jumping = true;
         }
     });
@@ -37,7 +37,7 @@ function initEventListeners(){
 }
 window.setInterval(player.idleStance,200);
 window.setInterval(background.moveHints, 30);
-window.setInterval(player.movePlayer,15);
+window.setInterval(player.movePlayer,2);
 window.setInterval(player.jumpPlayer,5);
 window.setInterval(player.running,100);
 initEventListeners();

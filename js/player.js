@@ -10,10 +10,13 @@ export const player = {
     height:256,
     frameX:0,
     frameY:0,
-    speed: 9,
+    speed: 2,
     moving: false,
     jumping: false,
-    stuck: false,
+    stuck: {
+        right: false,
+        left: false,
+    },
     type: 'z',
     top: false,
     fallen: false,
@@ -33,7 +36,13 @@ export const player = {
         }
     },
     running: function(){
-        if(player.frameX<2304 && player.moving){ 
+        if(player.frameX<2304 && player.moving){
+            if(player.stuck.right){
+                player.frameY = 512;
+            }
+            else if(player.stuck.left){
+                player.frameY = 768;
+            } 
             player.frameX = player.frameX + player.width;
         }
         else if(player.frameX==2304 && player.moving){ 
@@ -41,12 +50,12 @@ export const player = {
         }
     },
     movePlayer: function(){
-        if(keys[39] && !(keys[37] && keys[39]) && player.absx < 15400 ){
+        if(keys[39] && !(keys[37] && keys[39]) && player.absx < 15400 && !player.stuck.right){
             player.frameY = 512;
                 player.x += player.speed;
                 player.absx += player.speed;
         }
-        else if(keys[37] && !(keys[39] && keys[37]) && player.absx > 0){
+        else if(keys[37] && !(keys[39] && keys[37]) && player.absx > 0 && !player.stuck.left){
             player.frameY = 768;
                 player.x -= player.speed;
                 player.absx -= player.speed;
@@ -57,10 +66,10 @@ export const player = {
         if(player.jumping && !player.top){
             console.log('player.y: ', player.y);
             player.y -= 2;
-            if(!player.fallen && player.y == 30){
+            if(!player.fallen && player.y == 0){
                 player.top = true;
             }
-            else if(player.fallen && player.y == 115){
+            else if(player.fallen && player.y == 85){
                 player.top = true;
             }
         }
@@ -82,6 +91,14 @@ export const player = {
                 player.y += 85;
                 player.fallen = true;
             }
+            if(player.absx <= 2060 && player.absx >= 2050 && player.fallen && !player.jumping){
+                player.stuck.right = true;
+            }
+            else player.stuck.right = false;
+            if(player.absx >= 1695 && player.absx <= 1716 && player.fallen && !player.jumping){
+                player.stuck.left = true;
+            }
+            else player.stuck.left = false;
         }
         else if((player.absx < 1700 || player.absx > 2000) && player.fallen){
             player.y -= 85;
